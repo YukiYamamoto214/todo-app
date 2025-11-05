@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; // useEffect を削除
+import React, { useState, useEffect } from 'react';
 import { Plus, Search, Filter, Calendar, BarChart3, CheckCircle2, Circle, Clock, AlertTriangle, Edit, Trash2, Bell, Repeat, Tag, ChevronDown, ChevronRight } from 'lucide-react';
 
 // TaskItemコンポーネントをTaskManagerAppの外に定義
@@ -193,7 +193,25 @@ const TaskItem = ({ task, onToggleStatus, onEdit, onDelete, priorities, statuses
 
 
 const TaskManagerApp = () => {
-  const [tasks, setTasks] = useState([]);
+// localStorageから初期値を読み込む
+const [tasks, setTasks] = useState(() => {
+  try {
+    const savedTasks = localStorage.getItem('tasks');
+    return savedTasks ? JSON.parse(savedTasks) : [];
+  } catch (error) {
+    console.error('タスクの読み込みに失敗しました:', error);
+    return [];
+  }
+});
+
+// tasksが変更されるたびにlocalStorageに保存
+useEffect(() => {
+  try {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  } catch (error) {
+    console.error('タスクの保存に失敗しました:', error);
+  }
+}, [tasks]);
   const [showForm, setShowForm] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [view, setView] = useState('list');

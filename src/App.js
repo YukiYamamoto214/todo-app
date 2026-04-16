@@ -42,25 +42,25 @@ const TaskItem = ({ task, onToggleStatus, onEdit, onDelete, priorities, statuses
   const subtaskProgress = getSubtaskProgress();
 
   return (
-    <div className="p-6 hover:bg-gray-50 transition-colors">
-      <div className="flex items-start gap-4">
+    <div className="p-4 sm:p-6 hover:bg-gray-50 transition-colors">
+      <div className="flex items-start gap-3 sm:gap-4">
         <button
           onClick={() => onToggleStatus(task.id)}
-          className="mt-1 flex-shrink-0"
+          className="mt-1 flex-shrink-0 p-1 -m-1"
         >
           {task.status === 'completed' ? (
-            <CheckCircle2 className="text-green-600" size={20} />
+            <CheckCircle2 className="text-green-600" size={22} />
           ) : task.status === 'inprogress' ? (
-            <Clock className="text-blue-600" size={20} />
+            <Clock className="text-blue-600" size={22} />
           ) : (
-            <Circle className="text-gray-400" size={20} />
+            <Circle className="text-gray-400" size={22} />
           )}
         </button>
 
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between">
             <div className="flex-1 min-w-0">
-              <h3 className={`text-lg font-medium ${task.status === 'completed' ? 'line-through text-gray-500' : 'text-gray-900'}`}>
+              <h3 className={`text-base sm:text-lg font-medium ${task.status === 'completed' ? 'line-through text-gray-500' : 'text-gray-900'}`}>
                 {task.title}
               </h3>
               
@@ -124,28 +124,28 @@ const TaskItem = ({ task, onToggleStatus, onEdit, onDelete, priorities, statuses
               )}
             </div>
 
-            <div className="flex items-center gap-2 ml-4">
+            <div className="flex items-center gap-1 sm:gap-2 ml-2 sm:ml-4">
               {(task.subtasks?.length > 0 || task.notes) && (
                 <button
                   onClick={() => setExpanded(!expanded)}
-                  className="p-1 text-gray-400 hover:text-gray-600"
+                  className="p-2 text-gray-400 hover:text-gray-600 active:text-gray-800"
                 >
-                  {expanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+                  {expanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
                 </button>
               )}
-              
+
               <button
                 onClick={() => onEdit(task)}
-                className="p-1 text-gray-400 hover:text-blue-600"
+                className="p-2 text-gray-400 hover:text-blue-600 active:text-blue-800"
               >
-                <Edit size={16} />
+                <Edit size={18} />
               </button>
-              
+
               <button
                 onClick={() => onDelete(task.id)}
-                className="p-1 text-gray-400 hover:text-red-600"
+                className="p-2 text-gray-400 hover:text-red-600 active:text-red-800"
               >
-                <Trash2 size={16} />
+                <Trash2 size={18} />
               </button>
             </div>
           </div>
@@ -394,55 +394,57 @@ useEffect(() => {
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-gray-900">タスク管理</h1>
-            <div className="flex items-center gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+          <div className="flex items-center justify-between gap-3">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 shrink-0">タスク管理</h1>
+            <div className="flex items-center gap-2 sm:gap-4">
               {upcomingDeadlines.length > 0 && (
-                <div className="flex items-center gap-1 text-orange-600 bg-orange-50 px-3 py-1 rounded-full text-sm">
+                <div className="flex items-center gap-1 text-orange-600 bg-orange-50 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm">
                   <Bell size={16} />
-                  <span>{upcomingDeadlines.length}件の期限間近タスク</span>
+                  <span className="hidden sm:inline">{upcomingDeadlines.length}件の期限間近タスク</span>
+                  <span className="sm:hidden">{upcomingDeadlines.length}</span>
                 </div>
               )}
               <button
                 onClick={() => {
-                  resetForm(); // 新規作成時にフォームをリセット
+                  resetForm();
                   setShowForm(true);
                 }}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition-colors"
+                className="bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg flex items-center gap-1.5 sm:gap-2 hover:bg-blue-700 active:bg-blue-800 transition-colors text-sm sm:text-base shrink-0"
               >
                 <Plus size={20} />
-                新しいタスク
+                <span className="hidden sm:inline">新しいタスク</span>
+                <span className="sm:hidden">追加</span>
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* 統計情報 */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white p-4 rounded-lg shadow">
-            <div className="text-sm text-gray-600">総タスク数</div>
-            <div className="text-2xl font-bold text-gray-900">{stats.total}</div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+          <div className="bg-white p-3 sm:p-4 rounded-lg shadow">
+            <div className="text-xs sm:text-sm text-gray-600">総タスク数</div>
+            <div className="text-xl sm:text-2xl font-bold text-gray-900">{stats.total}</div>
           </div>
-          <div className="bg-white p-4 rounded-lg shadow">
-            <div className="text-sm text-gray-600">完了済み</div>
-            <div className="text-2xl font-bold text-green-600">{stats.completed}</div>
+          <div className="bg-white p-3 sm:p-4 rounded-lg shadow">
+            <div className="text-xs sm:text-sm text-gray-600">完了済み</div>
+            <div className="text-xl sm:text-2xl font-bold text-green-600">{stats.completed}</div>
           </div>
-          <div className="bg-white p-4 rounded-lg shadow">
-            <div className="text-sm text-gray-600">進行中</div>
-            <div className="text-2xl font-bold text-blue-600">{stats.inProgress}</div>
+          <div className="bg-white p-3 sm:p-4 rounded-lg shadow">
+            <div className="text-xs sm:text-sm text-gray-600">進行中</div>
+            <div className="text-xl sm:text-2xl font-bold text-blue-600">{stats.inProgress}</div>
           </div>
-          <div className="bg-white p-4 rounded-lg shadow">
-            <div className="text-sm text-gray-600">未着手</div>
-            <div className="text-2xl font-bold text-gray-600">{stats.todo}</div>
+          <div className="bg-white p-3 sm:p-4 rounded-lg shadow">
+            <div className="text-xs sm:text-sm text-gray-600">未着手</div>
+            <div className="text-xl sm:text-2xl font-bold text-gray-600">{stats.todo}</div>
           </div>
         </div>
 
         {/* 検索・フィルター */}
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6 mb-4 sm:mb-6">
+          <div className="space-y-3 sm:space-y-0 sm:grid sm:grid-cols-4 sm:gap-4 sm:items-center">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               <input
@@ -450,38 +452,40 @@ useEffect(() => {
                 placeholder="タスクを検索..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full pl-10 pr-4 py-2.5 sm:py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base sm:text-sm"
               />
             </div>
-            
-            <select
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="all">すべてのステータス</option>
-              {statuses.map(status => (
-                <option key={status.value} value={status.value}>{status.label}</option>
-              ))}
-            </select>
 
-            <select
-              value={filterPriority}
-              onChange={(e) => setFilterPriority(e.target.value)}
-              className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="all">すべての優先度</option>
-              {priorities.map(priority => (
-                <option key={priority.value} value={priority.value}>{priority.label}</option>
-              ))}
-            </select>
+            <div className="grid grid-cols-2 gap-2 sm:contents">
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+              >
+                <option value="all">全ステータス</option>
+                {statuses.map(status => (
+                  <option key={status.value} value={status.value}>{status.label}</option>
+                ))}
+              </select>
 
-            <label className="flex items-center justify-end">
+              <select
+                value={filterPriority}
+                onChange={(e) => setFilterPriority(e.target.value)}
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+              >
+                <option value="all">全優先度</option>
+                {priorities.map(priority => (
+                  <option key={priority.value} value={priority.value}>{priority.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <label className="flex items-center sm:justify-end">
               <input
                 type="checkbox"
                 checked={showCompletedTasks}
                 onChange={(e) => setShowCompletedTasks(e.target.checked)}
-                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                className="h-5 w-5 sm:h-4 sm:w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
               />
               <span className="ml-2 text-sm text-gray-700">完了タスクを表示</span>
             </label>
@@ -490,13 +494,13 @@ useEffect(() => {
 
         {/* タスクリスト */}
         <div className="bg-white rounded-lg shadow">
-          <div className="p-6 border-b">
-            <h2 className="text-lg font-semibold">タスク一覧 ({filteredTasks.length}件)</h2>
+          <div className="p-4 sm:p-6 border-b">
+            <h2 className="text-base sm:text-lg font-semibold">タスク一覧 ({filteredTasks.length}件)</h2>
           </div>
           
           <div className="divide-y">
             {filteredTasks.length === 0 ? (
-              <div className="p-8 text-center text-gray-500">
+              <div className="p-6 sm:p-8 text-center text-gray-500">
                 条件に一致するタスクがありません
               </div>
             ) : (
@@ -518,10 +522,10 @@ useEffect(() => {
 
       {/* タスク作成・編集モーダル */}
       {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b flex justify-between items-center">
-              <h2 className="text-xl font-semibold">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-end sm:items-center justify-center sm:p-4 z-50">
+          <div className="bg-white rounded-t-2xl sm:rounded-lg shadow-xl w-full sm:max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+            <div className="p-4 sm:p-6 border-b flex justify-between items-center sticky top-0 bg-white z-10">
+              <h2 className="text-lg sm:text-xl font-semibold">
                 {editingTask ? 'タスク編集' : '新しいタスク'}
               </h2>
               <button
@@ -530,13 +534,13 @@ useEffect(() => {
                   setEditingTask(null);
                   resetForm();
                 }}
-                className="text-gray-400 hover:text-gray-600"
+                className="p-2 -m-2 text-gray-400 hover:text-gray-600 active:text-gray-800 text-2xl"
               >
                 &times;
               </button>
             </div>
-            
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
+
+            <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   タイトル <span className="text-red-500">*</span>
@@ -749,10 +753,10 @@ useEffect(() => {
                 />
               </div>
 
-              <div className="flex gap-3 pt-4 border-t">
+              <div className="flex gap-3 pt-4 border-t pb-safe">
                 <button
                   type="submit"
-                  className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+                  className="flex-1 bg-blue-600 text-white py-3 sm:py-2 px-4 rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-colors text-base font-medium"
                 >
                   {editingTask ? '更新' : '作成'}
                 </button>
@@ -763,7 +767,7 @@ useEffect(() => {
                     setEditingTask(null);
                     resetForm();
                   }}
-                  className="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors"
+                  className="flex-1 bg-gray-200 text-gray-800 py-3 sm:py-2 px-4 rounded-lg hover:bg-gray-300 active:bg-gray-400 transition-colors text-base font-medium"
                 >
                   キャンセル
                 </button>
